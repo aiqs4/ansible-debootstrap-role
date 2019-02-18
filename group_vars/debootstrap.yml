@@ -1,0 +1,108 @@
+---
+release: cosmic
+root_password: <somehash>
+# user_serial: ## grub console
+use_tmpfs: True
+kernel_cmdline:
+grub_efi: True
+
+
+users:
+  - user1:
+      uid: 1000
+      groups: 
+        - sudo
+        - adm
+        #- cdrom
+        - dip
+        - plugdev
+        #- docker
+        #- libvirt
+        #- scanner
+        #- lxd
+        #- ceph
+      authorized_keys:
+        - ssh-rsa
+          AAAA.... user1@locahost
+
+install_packages:
+  - git
+  - tig
+  - vim
+  - emacs-nox
+  - htop
+  - iotop
+  - mc
+  - keepalived
+  - haproxy
+  - htop
+
+zfs_pool:
+  poolname: zroot
+  options:
+    - ashift=12
+  fs_options:
+    - acltype=posixacl
+    - canmount=off
+    - mountpoint=/
+    - compression=lz4
+    - atime=off
+    - normalization=formD
+    - xattr=sa 
+
+
+zfs_fs:
+  - path: '{{ zfs_pool.poolname }}/ROOT'
+    options:
+    - canmount=off
+    - mountpoint=none
+  - path: '{{ zfs_pool.poolname }}/ROOT/ubuntu'
+    options:
+    #- canmount=noauto
+    - mountpoint=/
+  - path: '{{ zfs_pool.poolname }}/home'
+    options:
+    - setuid=off
+  - path: '{{ zfs_pool.poolname }}/home/root'
+    options:
+    - mountpoint=/root
+  - path: '{{ zfs_pool.poolname }}/var'
+    options:
+    - exec=off
+    - setuid=off
+    - mountpoint=legacy
+    mount: /var
+  - path: '{{ zfs_pool.poolname }}/var/cache'
+    options:
+    - 'com.sun:auto-snapshot=false'
+    - mountpoint=legacy
+    mount: /var/cache
+  - path: '{{ zfs_pool.poolname }}/var/log'
+    optons:
+    - mountpoint=legacy
+    - acltype: posixacl
+    - xattr: sa
+    mount: /var/log
+  - path: '{{ zfs_pool.poolname }}/var/spool'
+    optons:
+    - mountpoint=legacy
+    mount: /var/spool
+  - path: '{{ zfs_pool.poolname }}/var/tmp'
+    optons:
+    - mountpoint=legacy
+    - com.sun:auto-snapshot=false
+    - setuid=off
+    mount: /var/tmp
+  - path: '{{ zfs_pool.poolname }}/var/lib'
+    optons:
+    - mountpoint=legacy
+    mount: /var/lib
+  - path: '{{ zfs_pool.poolname }}/var/lib/dpkg'
+    options:
+    - exec=on
+    - mountpoint=legacy
+    mount: /var/lib/dpkg
+  - path: '{{ zfs_pool.poolname }}/srv'
+  - path: '{{ zfs_pool.poolname }}/opt'
+
+zfs_root: '{{ zfs_pool.poolname }}/ROOT/ubuntu'

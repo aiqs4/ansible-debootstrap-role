@@ -1,0 +1,22 @@
+network:
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp1s0:
+            dhcp4: no
+        enp2s0:
+            dhcp4: no
+            # optional: true
+    bonds:
+        bond0:
+            dhcp4: yes
+            dhcp6: no
+            addresses:
+            - 10.0.0.10/8
+            interfaces:
+                - enp1s0
+                - enp2s0
+            nameservers:
+                    addresses:
+                            - 10.0.0.1
+                    search: [example.com]

@@ -1,0 +1,3 @@
+[submodule "roles/debootstrap"]
+	path = roles/debootstrap
+	url = ssh://git@github.com/sd-hd/ansible-debootstrap.git

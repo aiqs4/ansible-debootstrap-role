@@ -1,0 +1,7 @@
+---
+- name: Prepare and install Debian-Based OS
+  hosts: debootstrap
+  remote_user: root
+  become: yes
+  roles:
+      - debootstrap

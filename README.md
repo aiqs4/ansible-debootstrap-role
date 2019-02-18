@@ -1,2 +1,2 @@
 # ansible-debootstrap-role
-parent ansible repository
+parent ansible role for bootstrapping a zfs root ubuntu system

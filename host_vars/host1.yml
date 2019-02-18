@@ -1,0 +1,32 @@
+---
+tgt_hostname: localhost
+
+
+layout:
+  - device: '/dev/sda'
+    zap: True
+    partitions: 
+      - num: 1
+        size: 2G
+        fs: vfat
+        type: ef00
+        encrypt: no
+        mount: /boot/efi
+      - num: 2 # Notice absence of size here, will use full disk
+        type: bf00
+        encrypt: no
+
+#install_ppa:
+#install_packages:
+
+zfs_pool:
+  poolname: rpool
+  devices: [/dev/sda2]
+  #destroy: True
+
+  
+# zfs_fs:
+# zfs_root:
+
+
+
